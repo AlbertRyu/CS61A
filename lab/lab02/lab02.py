@@ -1,3 +1,4 @@
+from operator import add,mul,mod
 
 def lambda_curry2(func):
     """
@@ -15,7 +16,8 @@ def lambda_curry2(func):
     3
     """
     "*** YOUR CODE HERE ***"
-    return ______
+    
+    return lambda x: lambda y: func(x,y)
 
 
 
@@ -47,6 +49,13 @@ def count_cond(condition):
     8
     """
     "*** YOUR CODE HERE ***"
+    def func1(n):
+        k = 0
+        for i in range(1,n+1):
+            if condition(n,i):
+                k += 1    
+        return k
+    return func1 
 
 
 
@@ -62,6 +71,9 @@ def both_paths(sofar="S"):
     SUU
     """
     "*** YOUR CODE HERE ***"
+    print(sofar) 
+    
+    return lambda :both_paths(sofar+'U'), lambda: both_paths(sofar+'D')
 
 
 
@@ -97,6 +109,7 @@ def composite_identity(f, g):
     False
     """
     "*** YOUR CODE HERE ***"
+    return lambda x: f(g(x))==g(f(x))
 
 
 
@@ -126,5 +139,17 @@ def cycle(f1, f2, f3):
     >>> do_two_cycles(1)
     19
     """
+    func = [f1,f2,f3]
+    def how_many(times):
+        def apply(y):
+            results = y
+            for i in range(1,times+1):
+                #print(f'{i} time, result is now {results}')
+                while i > 3:
+                    i -= 3
+                #print(f'function is now',func[i-1])
+                results = func[i-1](results)
+            return results
+        return apply
+    return how_many
     "*** YOUR CODE HERE ***"
-
