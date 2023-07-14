@@ -13,7 +13,7 @@ def fac(n):
     while k<=n:
         result,k = result * k, k+1
     return result
-#TESTTEST
+
 def fac2(n):
     if n == 0: return 1
     else: return n * fac(n-1)
@@ -39,5 +39,32 @@ def double(x):
     else:
         return 2*x 
 
-        #Testsets
+def cascade(x):
+    if x < 10:
+        print(x)
+    else:
+        print(x)
+        cascade(x//10)
+        print(x)
+#test
+def grows(x,inverse):
+    if x < 10:
+        print(x)
+    else:
+        if not inverse: print(x)
+        grow(x//10,inverse)
+        if inverse: print(x)
         
+#Official Solution
+def inverse_cascade(n):
+    grow(n)
+    print(n)
+    shrink(n)
+    
+def f_then_g(f,g,n):
+    if n:
+        f(n)
+        g(n)
+
+grow = lambda n: f_then_g(grow,print,n//10)
+shrink = lambda n: f_then_g(print,shrink,n//10)
