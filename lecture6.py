@@ -13,7 +13,7 @@ def fac(n):
     while k<=n:
         result,k = result * k, k+1
     return result
-
+#TESTTEST
 def fac2(n):
     if n == 0: return 1
     else: return n * fac(n-1)
