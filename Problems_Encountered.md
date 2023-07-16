@@ -22,3 +22,8 @@ https://blog.csdn.net/weixin_42310154/article/details/118340458
     查看当前远程仓库地址：git remote -v
     修改远程仓库地址：git remote set-url origin git@{...}
     (用git@取代原先地址中的http(s)://)
+
+可以关闭代理（成功率不高）
+在命令行中键入：
+git config --global --unset http.proxy
+git:(main) git config --global --unset https.proxy
