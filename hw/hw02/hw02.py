@@ -136,18 +136,26 @@ def zero(f):
 def successor(n):
     return lambda f: lambda x: f(n(f)(x))
 
+#def successor(zero):
+#    return lambda f: lambda x: f(zero(f)(x))
+#   Thus it is just:
+
 def one(f):
     """Church numeral 1: same as successor(zero)"""
     "*** YOUR CODE HERE ***"
-    return lambda f: lambda x: f(x)
+    return lambda x: f(x)
+
+#def successor(one):
+    return lambda f:lambda x: f(f(x))
+
 
 def two(f):
     """Church numeral 2: same as successor(successor(zero))"""
     "*** YOUR CODE HERE ***"
-    return lambda f: lambda x: f(one(f))
+    return lambda x: f(f(x))
 
 three = successor(two)
-
+#lambda f: lambda x: f(f(x)) 
 
 def church_to_int(n):
     """Convert the Church numeral n to a Python integer.
@@ -162,7 +170,7 @@ def church_to_int(n):
     3
     """
     "*** YOUR CODE HERE ***"
-    return zero()
+    return n(lambda x:x+1)(0)
 
 
 def add_church(m, n):
@@ -172,6 +180,7 @@ def add_church(m, n):
     5
     """
     "*** YOUR CODE HERE ***"
+    return m(successor)(n)
 
 def mul_church(m, n):
     """Return the Church numeral for m * n, for Church numerals m and n.
@@ -183,6 +192,16 @@ def mul_church(m, n):
     12
     """
     "*** YOUR CODE HERE ***"
+    '''
+    i,r = 1,n
+    while i < m(lambda x:x+1)(0):
+        r = n(successor)(r)
+        i += 1
+    return r
+    '''
+    return lambda f: m(n(f))
+
+
 
 def pow_church(m, n):
     """Return the Church numeral m ** n, for Church numerals m and n.
@@ -193,4 +212,5 @@ def pow_church(m, n):
     9
     """
     "*** YOUR CODE HERE ***"
+    return n(m) 
 
