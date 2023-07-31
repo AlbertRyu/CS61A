@@ -127,7 +127,7 @@ def missing_digits(n):
     return helper(0,n,n%10)
 
 
-
+import math
 def count_change(total):
     """Return the number of ways to make change for total.
 
@@ -145,6 +145,23 @@ def count_change(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    maximum_coin_power = math.floor(total ** 0.5)
+    #print(maximum_coin_power)
+    def helper(total,m):
+        coin_value = 2 ** m
+        
+        if total == 0:
+            #print('end')
+            return 1
+        elif total < 0:
+            #print('excess')
+            return 0
+        elif m < 0:
+            #print('no more coins')
+            return 0
+        else:
+            return helper(total-coin_value,m)+helper(total,m-1)
+    return helper(total,maximum_coin_power)
 
 
 def print_move(origin, destination):
@@ -180,6 +197,15 @@ def move_stack(n, start, end):
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
     "*** YOUR CODE HERE ***"
+    if n == 1:
+        print_move(start,end) 
+    else:
+        poles = [1,2,3]
+        the_other_pole_list = [item for item in poles if item not in [start,end]]
+        the_other_pole = the_other_pole_list[0]
+        move_stack(n-1,start,the_other_pole)
+        print_move(start,end)
+        move_stack(n-1,the_other_pole,end)
 
 
 from operator import sub, mul
