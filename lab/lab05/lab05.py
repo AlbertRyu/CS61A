@@ -1,3 +1,4 @@
+import itertools
 def coords(fn, seq, lower, upper):
     """
     >>> seq = [-4, -2, 0, 1, 3]
@@ -6,7 +7,7 @@ def coords(fn, seq, lower, upper):
     [[-2, 4], [1, 1], [3, 9]]
     """
     "*** YOUR CODE HERE ***"
-    return [[x,fn(x)] for x in seq if (fn(x) >= lower and fn(x)<= upper)]
+    return [[x,fn(x)] for x in seq if (fn(x) <= upper and fn(x) >= lower)]
 
 
 def riffle(deck):
@@ -19,10 +20,9 @@ def riffle(deck):
     [0, 10, 1, 11, 2, 12, 3, 13, 4, 14, 5, 15, 6, 16, 7, 17, 8, 18, 9, 19]
     """
     "*** YOUR CODE HERE ***"
-    return [deck[((i+(i%2)*len(deck)) //2)] for i in range(len(deck))]
-'''
-    
-'''
+    return [deck[(len(deck) * (i%2) + i)//2] for i in range(len(deck))]
+
+
 def berry_finder(t):
     """Returns True if t contains a node with the value 'berry' and 
     False otherwise.
@@ -30,7 +30,6 @@ def berry_finder(t):
     >>> scrat = tree('berry')
     >>> berry_finder(scrat)
     True
-
     >>> sproul = tree('roots', [tree('branch1', [tree('leaf'), tree('berry')]), tree('branch2')])
     >>> berry_finder(sproul)
     True
@@ -41,12 +40,13 @@ def berry_finder(t):
     >>> berry_finder(t)
     True
     """
+    "*** YOUR CODE HERE ***"
     if label(t) == 'berry':
-      return True
+        return True
     else:
-      for i in branches(t):
-        if berry_finder(i):
-            return True
+        for bs in branches(t):
+            if berry_finder(bs):
+                return True
     return False
 
 
@@ -85,10 +85,9 @@ def sprout_leaves(t, leaves):
     """
     "*** YOUR CODE HERE ***"
     if is_leaf(t):
-      return tree(label(t),[tree(i) for i in leaves])
+        return tree(label(t),[tree(l) for l in leaves]) 
     else:
-      return tree(label(t),[sprout_leaves(b,leaves) for b in branches(t)])
-            
+        return tree(label(t),[sprout_leaves(bs,leaves) for bs in branches(t)])
 
 # Abstraction tests for sprout_leaves and berry_finder
 def check_abstraction():
@@ -175,6 +174,11 @@ def add_trees(t1, t2):
       5
     """
     "*** YOUR CODE HERE ***"
+    if not (branches(t1) or branches(t2)):
+        return tree(sum([label(t1),label(t2)]))
+    else:
+        bs = [add_trees(t1_bs,t2_bs) for t1_bs,t2_bs in itertools.zip_longest(branches(t1),branches(t2),fillvalue=[0])]
+        return tree(sum([label(t1),label(t2)]),bs)
 
 
 def build_successors_table(tokens):
