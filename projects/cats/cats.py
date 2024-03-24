@@ -107,30 +107,49 @@ def shifty_shifts(start, goal, limit):
     their lengths.
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+
+    if limit < 0:
+        return 0
+    #elif limit == 1:
+    #    return 1
+    elif len(goal) == 0 or len(start) == 0:
+        return len(goal) + len(start)
+    else:
+        if goal[0]==start[0]:
+            return shifty_shifts(start[1:],goal[1:],limit)
+        else:
+            return 1+shifty_shifts(start[1:],goal[1:],limit-1)
+    
+
     # END PROBLEM 6
 
 
 def meowstake_matches(start, goal, limit):
     """A diff function that computes the edit distance from START to GOAL."""
-    assert False, 'Remove this line'
+    #assert False, 'Remove this line'
 
-    if ______________: # Fill in the condition
+    if limit<0: # Fill in the condition,exceeding Limit
         # BEGIN
         "*** YOUR CODE HERE ***"
+        return 0
         # END
-
-    elif ___________: # Feel free to remove or add additional cases
+    
+    elif len(start) ==0 or len(goal) == 0:
+        return len(start)+len(goal)
+    
+    elif start[0] == goal[0]: # Feel free to remove or add additional cases
         # BEGIN
         "*** YOUR CODE HERE ***"
+        return meowstake_matches(start[1:],goal[1:],limit)
         # END
 
     else:
-        add_diff = ...  # Fill in these lines
-        remove_diff = ... 
-        substitute_diff = ... 
+        add_diff = 1 + meowstake_matches(start,goal[1:],limit-1) # Fill in these lines
+        remove_diff = 1 + meowstake_matches(start[1:],goal,limit-1) 
+        substitute_diff = 1 + meowstake_matches(start[1:],goal[1:],limit-1)
         # BEGIN
         "*** YOUR CODE HERE ***"
+        return min(add_diff,remove_diff,substitute_diff) 
         # END
 
 
@@ -148,6 +167,15 @@ def report_progress(typed, prompt, id, send):
     """Send a report of your id and progress so far to the multiplayer server."""
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    num_correct = 0
+    for k in range(len(typed)):
+        if typed[k] == prompt[k]:
+            num_correct += 1
+        else:
+            break
+    progress = num_correct / len(prompt)
+    send({'id': id, 'progress': progress})
+    return progress
     # END PROBLEM 8
 
 
@@ -174,6 +202,8 @@ def time_per_word(times_per_player, words):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    time = [[t[i]-t[i-1] for i in range(1,len(t))] for t in times_per_player]
+    return game(words,time)
     # END PROBLEM 9
 
 
@@ -188,7 +218,19 @@ def fastest_words(game):
     players = range(len(all_times(game)))  # An index for each player
     words = range(len(all_words(game)))    # An index for each word
     # BEGIN PROBLEM 10
+    transposed = list(zip(*all_times(game)))
+    fastest_id = [l.index(min(l)) for l in transposed]
+    tl = []
+    for player_id in players:
+        pl = [] 
+        for word_index in words:
+            if player_id == fastest_id[word_index]:
+                pl.append(all_words(game)[word_index])
+        tl.append(pl)
+    return tl
     "*** YOUR CODE HERE ***"
+    
+
     # END PROBLEM 10
 
 
@@ -228,7 +270,7 @@ def game_string(game):
     """A helper function that takes in a game object and returns a string representation of it"""
     return "game(%s, %s)" % (game[0], game[1])
 
-enable_multiplayer = False  # Change to True when you
+enable_multiplayer = True # Change to True when you
 
 ##########################
 # Extra Credit #
