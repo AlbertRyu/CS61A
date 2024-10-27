@@ -28,7 +28,7 @@
 
 ### 通过Https协议Push到GitHub经常失败
 
-可以切换到SSH协议：
+方法一：可以切换到SSH协议：
 
 1. 在自己的电脑上通过Terminal ssh-key gen生成一个SSH-key。参考[这篇文章](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agenthttps://blog.csdn.net/weixin_42310154/article/details/118340458)。
 
@@ -36,11 +36,11 @@
 
 1. 修改仓库的push，fetch地址为SSH协议
 
-    查看当前远程仓库地址：git remote -v
-    修改远程仓库地址：git remote set-url origin git@{...}
-    (用git@取代原先地址中的http(s)://)
+    查看当前远程仓库地址：git remote -v  
+    修改远程仓库地址：git remote set-url origin git@{...}  
+    (用git@取代原先地址中的http(s)://)  
 
-可以关闭代理（成功率不高）
-在命令行中键入：  
-git config --global --unset http.proxy  
-git:(main) git config --global --unset https.proxy  
+方法二：可以关闭代理（成功率不高），在命令行中键入：  
+
+1. git config --global --unset http.proxy  
+2. git:(main) git config --global --unset https.proxy
